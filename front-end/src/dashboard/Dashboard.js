@@ -31,23 +31,22 @@ function Dashboard({ date }) {
   }
 
   //Data changes
-  const previousDayHandler = (e) => {
-    e.preventDefault();
-    history.push('/dashboard');
+  const previousDayHandler = () => {
     setCurrentDate(previous(currentDate));
+    history.push(`/dashboard?date=${previous(currentDate)}`);
+    console.log(currentDate);
   }
 
-  const nextDayHandler = (e) => {
-    e.preventDefault();
-    history.push('/dashboard');
+  const nextDayHandler = () => {
     setCurrentDate(next(currentDate));
+    history.push(`/dashboard?date=${next(currentDate)}`);
+    console.log(currentDate);
   }
 
-  const todayHandler = (e) => {
-    e.preventDefault();
-    history.push('/dashboard');
+  const todayHandler = () => {
     setCurrentDate(date)
-    console.log(reservations);
+    history.push(`/dashboard?date=${date}`);
+    console.log(currentDate);
   }
 
 
