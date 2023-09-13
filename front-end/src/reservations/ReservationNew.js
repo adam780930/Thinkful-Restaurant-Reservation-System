@@ -32,6 +32,11 @@ function ReservationNew() {
     }
   };
 
+  // const submitHandler = (e) => {
+  //   e.preventDefault();
+  //   const 
+  // };
+
   return (
     <section>
       <h2>New Reservation:</h2>

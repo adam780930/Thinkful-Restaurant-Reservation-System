@@ -17,36 +17,37 @@ function Dashboard({ date }) {
   const [currentDate, setCurrentDate] = useState(date);
 
   const history = useHistory();
+
+  useEffect(loadDashboard, [currentDate]);
   
-
-  useEffect(loadDashboard, [date]);
-
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
-    listReservations({ date }, abortController.signal)
+    listReservations({ date: currentDate }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
     return () => abortController.abort();
   }
 
-  //Data changes
+  // function loadReservations(reservations) {
+  //   console.log(JSON.stringify(reservations))
+  //   setReservations(reservations);
+  // }
+
+  //Date changes
   const previousDayHandler = () => {
     setCurrentDate(previous(currentDate));
     history.push(`/dashboard?date=${previous(currentDate)}`);
-    console.log(currentDate);
   }
 
   const nextDayHandler = () => {
     setCurrentDate(next(currentDate));
-    history.push(`/dashboard?date=${next(currentDate)}`);
-    console.log(currentDate);
+    history.push(`/dashboard?date=${next(currentDate)}`)
   }
 
   const todayHandler = () => {
     setCurrentDate(date)
     history.push(`/dashboard?date=${date}`);
-    console.log(currentDate);
   }
 
 
@@ -65,8 +66,6 @@ function Dashboard({ date }) {
           <th scope="col">Reservation Date</th>
           <th scope="col">Reservation Time</th>
           <th scope="col">Number of People</th>
-          <th scope="col">Status</th>
-          <th scope="col">Options</th>
         </tr>
       </thead>
       <tbody>
@@ -81,8 +80,6 @@ function Dashboard({ date }) {
           <th scope="col">{reservations.reservation_date}</th>
           <th scope="col">{reservations.reservation_time}</th>
           <th scope="col">{reservations.people}</th>
-          <th scope="col">test</th>
-          <th scope="col">test</th>
         </tr>
       </thead>
       <tbody>
