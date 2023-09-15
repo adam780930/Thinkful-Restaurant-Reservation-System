@@ -19,7 +19,7 @@ function Dashboard({ date }) {
   const history = useHistory();
 
   useEffect(loadDashboard, [currentDate]);
-  
+
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
@@ -38,18 +38,30 @@ function Dashboard({ date }) {
   const previousDayHandler = () => {
     setCurrentDate(previous(currentDate));
     history.push(`/dashboard?date=${previous(currentDate)}`);
-  }
+  };
 
   const nextDayHandler = () => {
     setCurrentDate(next(currentDate));
-    history.push(`/dashboard?date=${next(currentDate)}`)
-  }
+    history.push(`/dashboard?date=${next(currentDate)}`);
+  };
 
   const todayHandler = () => {
-    setCurrentDate(date)
-    history.push(`/dashboard?date=${date}`);
-  }
+    setCurrentDate(date);
+    history.push(`/dashboard`);
+  };
 
+  const resList = reservations.map((reservation) => {
+    return (
+      <tr>
+        <th scope="col">{reservation.first_name}</th>
+        <th scope="col">{reservation.last_name}</th>
+        <th scope="col">{reservation.mobile_number}</th>
+        <th scope="col">{reservation.reservation_date}</th>
+        <th scope="col">{reservation.reservation_time}</th>
+        <th scope="col">{reservation.people}</th>
+      </tr>
+    );
+  });
 
   return (
     <main>
@@ -57,36 +69,6 @@ function Dashboard({ date }) {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {currentDate}</h4>
       </div>
-      <table className="table">
-      <thead>
-        <tr>
-          <th scope="col">First Name</th>
-          <th scope="col">Last Name</th>
-          <th scope="col">Mobile Number</th>
-          <th scope="col">Reservation Date</th>
-          <th scope="col">Reservation Time</th>
-          <th scope="col">Number of People</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-    <table className="table">
-      <thead>
-        <tr>
-          <th scope="col">{reservations.first_name}</th>
-          <th scope="col">{reservations.last_name}</th>
-          <th scope="col">{reservations.mobile_number}</th>
-          <th scope="col">{reservations.reservation_date}</th>
-          <th scope="col">{reservations.reservation_time}</th>
-          <th scope="col">{reservations.people}</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-      <ErrorAlert error={reservationsError} />
-      {JSON.stringify(reservations)}
       <div className="item centered">
         <div className="group-row">
           <button className="btn-dark" onClick={previousDayHandler}>
@@ -100,6 +82,28 @@ function Dashboard({ date }) {
           </button>
         </div>
       </div>
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Mobile Number</th>
+            <th scope="col">Reservation Date</th>
+            <th scope="col">Reservation Time</th>
+            <th scope="col">Number of People</th>
+          </tr>
+          {resList}
+        </thead>
+        <tbody></tbody>
+      </table>
+      <table className="table">
+        <thead>
+          
+          </thead>
+        <tbody></tbody>
+      </table>
+      <ErrorAlert error={reservationsError} />
+      {/* {JSON.stringify(reservations)} */}
     </main>
   );
 }

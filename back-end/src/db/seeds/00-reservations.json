@@ -50,34 +50,22 @@
     "updated_at": "2020-12-10T08:31:32.326Z"
   },
   {
-    "first_name": "Johnny",
-    "last_name": "Bravo",
+    "first_name": "Kevin",
+    "last_name": "Cena",
     "mobile_number": "620-555-8888",
-    "reservation_date": "2023-08-26",
+    "reservation_date": "2023-09-14",
     "reservation_time": "18:00",
     "people": 2,
     "created_at": "2020-12-10T08:31:32.326Z",
     "updated_at": "2020-12-10T08:31:32.326Z"
-  }
-  ,
+  },
   {
     "first_name": "Johnny",
     "last_name": "Bravo",
-    "mobile_number": "620-555-8888",
-    "reservation_date": "2023-09-11",
-    "reservation_time": "18:00",
-    "people": 2,
-    "created_at": "2020-12-10T08:31:32.326Z",
-    "updated_at": "2020-12-10T08:31:32.326Z"
-  }
-  ,
-  {
-    "first_name": "Johnny",
-    "last_name": "Bravo",
-    "mobile_number": "620-555-8888",
-    "reservation_date": "2023-09-10",
-    "reservation_time": "18:00",
-    "people": 2,
+    "mobile_number": "622-432-8796",
+    "reservation_date": "2023-09-14",
+    "reservation_time": "19:00",
+    "people": 5,
     "created_at": "2020-12-10T08:31:32.326Z",
     "updated_at": "2020-12-10T08:31:32.326Z"
   }
