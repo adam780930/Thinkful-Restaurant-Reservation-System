@@ -88,12 +88,13 @@ function reservationDuringBusHours (req, res, next) {
   const resTime = reservation_time.split(":");
   const hour = Number(resTime[0]);
   const min = Number(resTime[1]);
-  if (hour <= 10 && min < 30) {
+  if (hour < 10 || (hour === 10 && min < 30)) {
     next({
       status: 400,
       message: "Reservation must be within business hour 10:30 to 21:30",
     })
-  } else if (hour > 21 || (hour = 21 && min > 30)) {
+  } 
+  if (hour > 21 || (hour === 21 && min > 30)) {
     next({
       status: 400,
       message: "Reservation must be within business hour 10:30 to 21:30",
