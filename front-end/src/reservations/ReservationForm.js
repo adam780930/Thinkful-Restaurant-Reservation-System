@@ -1,10 +1,9 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 
-function ReservationForm({reservation, changeHandler}) {
+function ReservationForm({reservation, changeHandler, submitHandler, cancelHandler}) {
   return (
     <div>
-      <form onSubmit={1}>
+      <form>
         <fieldset>
           <div>
             <label htmlFor="first_name">First Name:</label>
@@ -83,10 +82,10 @@ function ReservationForm({reservation, changeHandler}) {
             />
           </div>
           <div className="group-row">
-            <button className="btn-dark" type="button">
+            <button className="btn-dark" type="button" onClick={cancelHandler}>
               Cancel
             </button>
-            <button className="btn-dark" type="submit">
+            <button className="btn-dark" type="submit" onClick={submitHandler}>
               Submit
             </button>
           </div>

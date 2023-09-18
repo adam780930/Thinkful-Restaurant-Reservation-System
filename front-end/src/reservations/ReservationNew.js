@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import ReservationForm from "./ReservationForm";
+import { createReservation } from "../utils/api";
+import ErrorAlert from "../layout/ErrorAlert";
 
 function ReservationNew() {
   const history = useHistory();
@@ -17,6 +19,7 @@ function ReservationNew() {
   const [reservation, setReservation] = useState({
     ...initialResState,
   });
+  const [createResError, setResError] = useState(null);
 
   const changeHandler = (e) => {
     if (e.target.name === "people") {
@@ -32,17 +35,31 @@ function ReservationNew() {
     }
   };
 
-  // const submitHandler = (e) => {
-  //   e.preventDefault();
-  //   const 
-  // };
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const controller = new AbortController();
+    createReservation(reservation, controller.signal)
+      .then(() => history.push("/"))
+      .catch(setResError);
+    return () => controller.abort();
+  };
+
+  const cancelHandler = (e) => {
+    e.preventDefault();
+    const controller = new AbortController();
+    history.push("/");
+    return () => controller.abort();
+  };
 
   return (
     <section>
       <h2>New Reservation:</h2>
+      <ErrorAlert error={createResError} />
       <ReservationForm
         changeHandler={changeHandler}
         reservation={reservation}
+        submitHandler={submitHandler}
+        cancelHandler={cancelHandler}
       />
     </section>
   );

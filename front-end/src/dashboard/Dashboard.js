@@ -50,6 +50,7 @@ function Dashboard({ date }) {
     history.push(`/dashboard`);
   };
 
+  // List of reservation that matches currentDate
   const resList = reservations.map((reservation) => {
     return (
       <tr>
@@ -59,6 +60,7 @@ function Dashboard({ date }) {
         <th scope="col">{reservation.reservation_date}</th>
         <th scope="col">{reservation.reservation_time}</th>
         <th scope="col">{reservation.people}</th>
+        <th scope="col">{reservation.status}</th>
       </tr>
     );
   });
@@ -91,6 +93,7 @@ function Dashboard({ date }) {
             <th scope="col">Reservation Date</th>
             <th scope="col">Reservation Time</th>
             <th scope="col">Number of People</th>
+            <th scope="col">Status</th>
           </tr>
           {resList}
         </thead>
