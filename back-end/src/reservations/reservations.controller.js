@@ -6,53 +6,101 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 //Middlewares
 function validData(req, res, next) {
-  if (!req.body.data) {
-    next({
-      message: "Reservation information required",
-      status: 400,
-    });
+  if (req.body.data) {
+    return next();
   }
-  return next();
+  next({
+    message: "Reservation information required",
+    status: 400,
+  });
 }
 
 function validFirstName(req, res, next) {
-  if (!req.body.data.first_name) {
-    next({
-      message: "First name is required",
-      status: 400,
-    });
+  if (req.body.data.first_name) {
+    return next();
   }
-  return next();
+  next({
+    message: "first_name is required",
+    status: 400,
+  });
 }
 
 function validLastName(req, res, next) {
-  if (!req.body.data.last_name) {
-    next({
-      message: "Last name is required",
-      status: 400,
-    });
+  if (req.body.data.last_name) {
+    return next();
   }
-  return next();
+  next({
+    message: "last_name is required",
+    status: 400,
+  });
 }
 
 function validMobileNumber(req, res, next) {
-  if (!req.body.data.mobile_number) {
-    next({
-      message: "Mobile number is required",
-      status: 400,
-    });
+  if (req.body.data.mobile_number) {
+    return next();
   }
-  return next();
+  next({
+    message: "mobile_number is required",
+    status: 400,
+  });
 }
 
-function validDate(req, res, next){
-  if (!req.body.data.reservation_date) {
-    next ({
-      message: "Reservation date is required",
-      statis: 400,
-    })
+function hasDate(req, res, next) {
+  if (req.body.data.reservation_date) {
+    return next();
   }
-  return next();
+  next({
+    message: "reservation_date is required",
+    statis: 400,
+  });
+}
+
+function validDate(req, res, next) {
+  const date = req.body.data.reservation_date;
+  const valid = Date.parse(date);
+
+  if (valid) {
+    return next();
+  }
+  next({
+    message: "reservation_date must be valid",
+    status: 400,
+  })
+}
+
+function hasTime(req, res, next) {
+  const time = req.body.data.reservation_time;
+  if (time && typeof time === 'string') {
+    return next();
+  }
+  next({
+    message: "reservation_time is required",
+    status: 400,  
+  })
+}
+
+function validTime(req, res, next) {
+  const timeRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$/;
+  const time = req.body.data.reservation_time;
+  const valid = time.match(timeRegex);
+  if (valid) {
+    return next();
+  }
+  next({
+    message: "reservation_time must be valid",
+    status: 400,
+  })
+}
+
+function validPeople(req, res, next) {
+  const people = req.body.data.people;
+  if (people > 0 && typeof people === "number") {
+    return next();
+  }
+  next({
+    message: "people is required",
+    statis: 400,
+  });
 }
 
 //Check if the reservation is made for a Tuesday
@@ -60,7 +108,7 @@ function reservationOnTuesday(req, res, next) {
   const { reservation_date } = req.body.data;
   const tuesday = new Date(reservation_date).getUTCDay();
   if (tuesday === 2) {
-    return next({
+    next({
       message: "The restaurant is closed on Tuesday!",
       status: 400,
     });
@@ -74,7 +122,7 @@ function reservationIsInPast(req, res, next) {
   const now = Date.now();
   const resDate = new Date(`${reservation_date} ${reservation_time}`).valueOf();
   if (resDate < now) {
-    return next({
+    next({
       message: "Reservation must be made for the future",
       status: 400,
     });
@@ -83,7 +131,7 @@ function reservationIsInPast(req, res, next) {
 }
 
 //Check is the reservation is made for business hour
-function reservationDuringBusHours (req, res, next) {
+function reservationDuringBusHours(req, res, next) {
   const { reservation_time } = req.body.data;
   const resTime = reservation_time.split(":");
   const hour = Number(resTime[0]);
@@ -92,17 +140,16 @@ function reservationDuringBusHours (req, res, next) {
     next({
       status: 400,
       message: "Reservation must be within business hour 10:30 to 21:30",
-    })
-  } 
+    });
+  }
   if (hour > 21 || (hour === 21 && min > 30)) {
     next({
       status: 400,
       message: "Reservation must be within business hour 10:30 to 21:30",
-    })
+    });
   }
   return next();
 }
-
 
 // List reservation
 async function list(req, res) {
@@ -134,8 +181,6 @@ async function create(req, res) {
   res.status(201).json({ data: newReservation });
 }
 
-
-
 module.exports = {
   list: [asyncErrorBoundary(list)],
   create: [
@@ -143,7 +188,11 @@ module.exports = {
     asyncErrorBoundary(validFirstName),
     asyncErrorBoundary(validLastName),
     asyncErrorBoundary(validMobileNumber),
+    asyncErrorBoundary(hasDate),
     asyncErrorBoundary(validDate),
+    asyncErrorBoundary(hasTime),
+    asyncErrorBoundary(validTime),
+    asyncErrorBoundary(validPeople),
     asyncErrorBoundary(reservationDuringBusHours),
     asyncErrorBoundary(reservationOnTuesday),
     asyncErrorBoundary(reservationIsInPast),
