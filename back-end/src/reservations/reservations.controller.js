@@ -46,7 +46,8 @@ function validMobileNumber(req, res, next) {
 }
 
 function hasDate(req, res, next) {
-  if (req.body.data.reservation_date) {
+  const reservationDate = req.body.data.reservation_date;
+  if (reservationDate && reservationDate !== "") {
     return next();
   }
   next({
@@ -65,18 +66,18 @@ function validDate(req, res, next) {
   next({
     message: "reservation_date must be valid",
     status: 400,
-  })
+  });
 }
 
 function hasTime(req, res, next) {
   const time = req.body.data.reservation_time;
-  if (time && typeof time === 'string') {
+  if (time && typeof time === "string") {
     return next();
   }
   next({
     message: "reservation_time is required",
-    status: 400,  
-  })
+    status: 400,
+  });
 }
 
 function validTime(req, res, next) {
@@ -89,17 +90,17 @@ function validTime(req, res, next) {
   next({
     message: "reservation_time must be valid",
     status: 400,
-  })
+  });
 }
 
 function validPeople(req, res, next) {
   const people = req.body.data.people;
-  if (people > 0 && typeof people === "number") {
+  if (people && people > 0 && typeof people === "number") {
     return next();
   }
   next({
     message: "people is required",
-    statis: 400,
+    status: 400,
   });
 }
 
