@@ -45,22 +45,11 @@ function validMobileNumber(req, res, next) {
   });
 }
 
-function hasDate(req, res, next) {
-  const reservationDate = req.body.data.reservation_date;
-  if (reservationDate && reservationDate !== "") {
-    return next();
-  }
-  next({
-    message: "reservation_date is required",
-    statis: 400,
-  });
-}
-
 function validDate(req, res, next) {
   const date = req.body.data.reservation_date;
   const valid = Date.parse(date);
 
-  if (valid) {
+  if (date && date !=="" && valid) {
     return next();
   }
   next({
@@ -71,7 +60,7 @@ function validDate(req, res, next) {
 
 function hasTime(req, res, next) {
   const time = req.body.data.reservation_time;
-  if (time && typeof time === "string") {
+  if (time && (typeof time === "string")) {
     return next();
   }
   next({
@@ -189,7 +178,6 @@ module.exports = {
     asyncErrorBoundary(validFirstName),
     asyncErrorBoundary(validLastName),
     asyncErrorBoundary(validMobileNumber),
-    asyncErrorBoundary(hasDate),
     asyncErrorBoundary(validDate),
     asyncErrorBoundary(hasTime),
     asyncErrorBoundary(validTime),
