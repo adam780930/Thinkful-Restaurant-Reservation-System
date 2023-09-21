@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { listReservations } from "../utils/api";
+import { listReservations, listTables } from "../utils/api";
 import { useHistory } from "react-router-dom";
 import { previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
@@ -15,6 +15,8 @@ function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const [currentDate, setCurrentDate] = useState(date);
+  const [tables, setTables] = useState([]);
+  const [tablesError, setTablesError] = useState(null);
 
   const history = useHistory();
 
@@ -26,6 +28,8 @@ function Dashboard({ date }) {
     listReservations({ date: currentDate }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
+      setTablesError(null);
+    listTables(abortController.signal).then(setTables).catch(setTablesError);
     return () => abortController.abort();
   }
 
@@ -65,6 +69,16 @@ function Dashboard({ date }) {
     );
   });
 
+  const tableList = tables.map((table) => {
+    return (
+      <tr>
+        <th scope="col">{table.table_name}</th>
+        <th scope="col">{table.capacity}</th>
+        <th scope="col">{table.status}</th>
+      </tr>
+    );
+  });
+
   return (
     <main>
       <h1>Dashboard</h1>
@@ -99,13 +113,19 @@ function Dashboard({ date }) {
         </thead>
         <tbody></tbody>
       </table>
+      <ErrorAlert error={reservationsError} />
       <table className="table">
         <thead>
-          
-          </thead>
+          <tr>
+            <th scope="col">Table Name</th>
+            <th scope="col">Capacity</th>
+            <th scope="col">Status</th>
+          </tr>
+          {tableList}
+        </thead>
         <tbody></tbody>
       </table>
-      <ErrorAlert error={reservationsError} />
+      <ErrorAlert error={tablesError} />
       {/* {JSON.stringify(reservations)} */}
     </main>
   );

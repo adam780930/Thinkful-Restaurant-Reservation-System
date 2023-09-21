@@ -144,8 +144,8 @@ function reservationDuringBusHours(req, res, next) {
 // List reservation
 async function list(req, res) {
   const { date } = req.query;
-  const ReservationData = await service.list(date);
-  res.json({ data: ReservationData });
+  const reservationData = await service.list(date);
+  res.json({ data: reservationData });
 }
 
 //Create reservation
