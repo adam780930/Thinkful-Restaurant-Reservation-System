@@ -33,6 +33,11 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }
 
+  // function logTables(json) {
+  //   console.log(JSON.stringify(json))
+  //   setTables(json)
+  // }
+
   // function loadReservations(reservations) {
   //   console.log(JSON.stringify(reservations))
   //   setReservations(reservations);
@@ -57,7 +62,7 @@ function Dashboard({ date }) {
   // List of reservation that matches currentDate
   const resList = reservations.map((reservation) => {
     return (
-      <tr>
+      <tr key={reservation.reservation_id}>
         <th scope="col">{reservation.first_name}</th>
         <th scope="col">{reservation.last_name}</th>
         <th scope="col">{reservation.mobile_number}</th>
@@ -71,7 +76,7 @@ function Dashboard({ date }) {
 
   const tableList = tables.map((table) => {
     return (
-      <tr>
+      <tr key={table.table_id}>
         <th scope="col">{table.table_name}</th>
         <th scope="col">{table.capacity}</th>
         <th scope="col">{table.status}</th>
