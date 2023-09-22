@@ -9,16 +9,16 @@ function list(reservation_date) {
   }
 }
 
-const read = (reservation_id) => {
+function read(reservation_id) {
   return knex("reservations").where({ reservation_id }).first();
-};
+}
 
-const create = (newReservation) => {
+function create(newReservation) {
   return knex("reservations")
     .insert(newReservation)
     .returning("*")
     .then((createdReservation) => createdReservation[0]);
-};
+}
 
 module.exports = {
   list,

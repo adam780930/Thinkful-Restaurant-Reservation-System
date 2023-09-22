@@ -1,22 +1,22 @@
 const knex = require("../db/connection.js");
 
 function list() {
-  return knex("tables").select("*");
+  return knex("tables").select("*").orderBy("table_name");
 }
 
-// const read = (reservation_id) => {
-//   return knex("reservations").where({ reservation_id }).first();
-// };
+function read(table_id) {
+  return knex("tables").where({ table_id }).first();
+}
 
-// const create = (newReservation) => {
-//   return knex("reservations")
-//     .insert(newReservation)
-//     .returning("*")
-//     .then((createdReservation) => createdReservation[0]);
-// };
+function create(newTable) {
+  return knex("tables")
+    .insert(newTable)
+    .returning("*")
+    .then((createdTable) => createdTable[0]);
+}
 
 module.exports = {
   list,
-  //   read,
-  //   create,
+  read,
+  create,
 };

@@ -3,6 +3,8 @@ import { listReservations, listTables } from "../utils/api";
 import { useHistory } from "react-router-dom";
 import { previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
+import ReservationList from "../reservations/ReservationList"
+import TableList from "../tables/TableList"
 
 /**
  * Defines the dashboard page.
@@ -24,11 +26,11 @@ function Dashboard({ date }) {
 
   function loadDashboard() {
     const abortController = new AbortController();
-    setReservationsError(null);
+    setReservationsError(null); //List reservations
     listReservations({ date: currentDate }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
-      setTablesError(null);
+      setTablesError(null);  //List tables
     listTables(abortController.signal).then(setTables).catch(setTablesError);
     return () => abortController.abort();
   }
@@ -59,31 +61,6 @@ function Dashboard({ date }) {
     history.push(`/dashboard`);
   };
 
-  // List of reservation that matches currentDate
-  const resList = reservations.map((reservation) => {
-    return (
-      <tr key={reservation.reservation_id}>
-        <th scope="col">{reservation.first_name}</th>
-        <th scope="col">{reservation.last_name}</th>
-        <th scope="col">{reservation.mobile_number}</th>
-        <th scope="col">{reservation.reservation_date}</th>
-        <th scope="col">{reservation.reservation_time}</th>
-        <th scope="col">{reservation.people}</th>
-        <th scope="col">{reservation.status}</th>
-      </tr>
-    );
-  });
-
-  const tableList = tables.map((table) => {
-    return (
-      <tr key={table.table_id}>
-        <th scope="col">{table.table_name}</th>
-        <th scope="col">{table.capacity}</th>
-        <th scope="col">{table.status}</th>
-      </tr>
-    );
-  });
-
   return (
     <main>
       <h1>Dashboard</h1>
@@ -103,33 +80,9 @@ function Dashboard({ date }) {
           </button>
         </div>
       </div>
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Mobile Number</th>
-            <th scope="col">Reservation Date</th>
-            <th scope="col">Reservation Time</th>
-            <th scope="col">Number of People</th>
-            <th scope="col">Status</th>
-          </tr>
-          {resList}
-        </thead>
-        <tbody></tbody>
-      </table>
+      <ReservationList reservations={reservations} />
       <ErrorAlert error={reservationsError} />
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">Table Name</th>
-            <th scope="col">Capacity</th>
-            <th scope="col">Status</th>
-          </tr>
-          {tableList}
-        </thead>
-        <tbody></tbody>
-      </table>
+      <TableList tables={tables} />
       <ErrorAlert error={tablesError} />
       {/* {JSON.stringify(reservations)} */}
     </main>
