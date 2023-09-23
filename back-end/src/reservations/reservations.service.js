@@ -5,7 +5,7 @@ function list(reservation_date) {
     return knex("reservations")
       .select("*")
       .where({ reservation_date })
-      .orderBy("reservations.reservation_time");
+      .orderBy("reservation_time");
   }
 }
 
