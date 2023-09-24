@@ -165,7 +165,7 @@ async function create(req, res) {
     reservation_date,
     reservation_time,
     people,
-    status: "booked",
+    status: "Booked",
   };
   const newReservation = await service.create(newReservationData);
   res.status(201).json({ data: newReservation });

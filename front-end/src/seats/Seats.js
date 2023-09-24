@@ -11,7 +11,7 @@ function Seats() {
   const [tablesError, setTablesError] = useState([]);
   const [tableId, setTableId] = useState(0);
 
-  useEffect(loadTables, [tables]);
+  useEffect(loadTables, []);
 
   function loadTables() {
     const abortController = new AbortController();

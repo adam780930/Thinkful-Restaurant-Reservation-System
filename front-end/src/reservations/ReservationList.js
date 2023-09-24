@@ -15,7 +15,7 @@ function ReservationList({ reservations }) {
         <td>{reservation.people}</td>
         <td>{reservation.status}</td>
         <td>
-          {reservation.status === "booked" ? (
+          {reservation.status === "Booked" ? (
             <div>
               <a href={`/reservations/${reservation.reservation_id}/seat`}>
                 <button className="btn-dark">Seat</button>
@@ -42,6 +42,7 @@ function ReservationList({ reservations }) {
           <th scope="col">Reservation Time</th>
           <th scope="col">Number of People</th>
           <th scope="col">Status</th>
+          <th scope="col">Selections</th>
         </tr>
       </thead>
       <tbody>{resList}</tbody>
