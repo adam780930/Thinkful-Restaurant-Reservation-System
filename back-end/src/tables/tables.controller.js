@@ -24,8 +24,8 @@ function hasReservationId(req, res, next) {
   });
 }
 
-async function validReservation (req, res, next) {
-  const resId = req.body.data.reservation_id
+async function validReservation(req, res, next) {
+  const resId = req.body.data.reservation_id;
   const reservation = await service.readReservation(resId);
   if (reservation) {
     res.locals.reservation = reservation;
@@ -63,11 +63,11 @@ function validTableName(req, res, next) {
 
 async function validCapacity(req, res, next) {
   const capacity = req.body.data.capacity;
-  if (capacity && typeof capacity === "number" && capacity > 0) {
+  if (capacity && capacity > 0 && typeof capacity === "number") {
     return next();
   }
   next({
-    message: `capacity is required ${capacity}`,
+    message: `capacity is required`,
     status: 400,
   });
 }
@@ -92,7 +92,6 @@ async function tableIsOccupied(req, res, next) {
       message: "table_id is occupied",
       status: 400,
     });
-    
   }
   return next();
 }

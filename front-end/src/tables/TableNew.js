@@ -9,7 +9,7 @@ function TableNew() {
 
   const initialTableState = {
     table_name: "",
-    capacity: 1
+    capacity: 1,
   };
 
   const [tableData, setTableData] = useState({
@@ -24,6 +24,14 @@ function TableNew() {
         [e.target.name]: e.target.value,
       });
     }
+
+    const changeCapacityHandler = (e) => {
+      e.preventDefault();
+          setTableData({
+          ...tableData,
+          [e.target.name]: Number(e.target.value),
+        });
+      }
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -47,6 +55,7 @@ function TableNew() {
       <ErrorAlert error={createTableError} />
       <TableForm
         changeHandler={changeHandler}
+        changeCapacityHandler={changeCapacityHandler}
         tableData={tableData}
         submitHandler={submitHandler}
         cancelHandler={cancelHandler}

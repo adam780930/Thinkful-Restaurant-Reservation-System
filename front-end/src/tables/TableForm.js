@@ -1,6 +1,6 @@
 import React from "react";
 
-function TableForm({tableData, changeHandler, submitHandler, cancelHandler}) {
+function TableForm({tableData, changeHandler, submitHandler, cancelHandler, changeCapacityHandler}) {
   return (
     <div>
       <form>
@@ -25,8 +25,7 @@ function TableForm({tableData, changeHandler, submitHandler, cancelHandler}) {
               type="number"
               required={true}
               value={tableData.capacity}
-              min={1}
-              onChange={changeHandler}
+              onChange={changeCapacityHandler}
             />
           </div>
           
