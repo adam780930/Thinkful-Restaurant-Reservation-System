@@ -5,21 +5,18 @@ const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 //Middlewares
-const reservationIdExists = async (req, res, next) => {
-  const { reservation_id } = req.params;
-  const reservation = await service.read(
-    Number(reservation_id)
-  );
-  if (reservation_id && reservation_id !== "" && reservation) {
+async function reservationIdExists(req, res, next) {
+  const resId = req.params.reservation_id;
+  const reservation = await service.read(resId);
+  if (resId && resId !== "" && reservation) {
     res.locals.reservation = reservation;
     return next();
-  } else {
-    return next({
-      message: `reservation_id does not exist`,
-      status: 404,
-    });
   }
-};
+  next({
+    message: `Reservation ${resId} cannot be found`,
+    status: 404,
+  });
+}
 
 function validData(req, res, next) {
   if (req.body.data) {
@@ -65,7 +62,7 @@ function validDate(req, res, next) {
   const date = req.body.data.reservation_date;
   const valid = Date.parse(date);
 
-  if (date && date !=="" && valid) {
+  if (date && date !== "" && valid) {
     return next();
   }
   next({
@@ -76,7 +73,7 @@ function validDate(req, res, next) {
 
 function hasTime(req, res, next) {
   const time = req.body.data.reservation_time;
-  if (time && (typeof time === "string")) {
+  if (time && typeof time === "string") {
     return next();
   }
   next({
@@ -208,5 +205,5 @@ module.exports = {
     asyncErrorBoundary(reservationIsInPast),
     asyncErrorBoundary(create),
   ],
-  read: [asyncErrorBoundary(reservationIdExists),asyncErrorBoundary(read)],
+  read: [asyncErrorBoundary(reservationIdExists), asyncErrorBoundary(read)],
 };
