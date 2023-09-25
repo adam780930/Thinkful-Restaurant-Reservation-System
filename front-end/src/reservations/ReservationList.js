@@ -15,7 +15,7 @@ function ReservationList({ reservations }) {
         <td>{reservation.people}</td>
         <td>{reservation.status}</td>
         <td>
-          {reservation.status === "Booked" ? (
+          {reservation.status === "booked" ? (
             <div>
               <a href={`/reservations/${reservation.reservation_id}/seat`}>
                 <button className="btn-dark">Seat</button>

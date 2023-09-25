@@ -5,6 +5,22 @@ const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 //Middlewares
+const reservationIdExists = async (req, res, next) => {
+  const { reservation_id } = req.params;
+  const reservation = await service.read(
+    Number(reservation_id)
+  );
+  if (reservation_id && reservation_id !== "" && reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  } else {
+    return next({
+      message: `reservation_id does not exist`,
+      status: 404,
+    });
+  }
+};
+
 function validData(req, res, next) {
   if (req.body.data) {
     return next();
@@ -165,10 +181,15 @@ async function create(req, res) {
     reservation_date,
     reservation_time,
     people,
-    status: "Booked",
+    status: "booked",
   };
   const newReservation = await service.create(newReservationData);
   res.status(201).json({ data: newReservation });
+}
+
+async function read(req, res) {
+  const data = res.locals.reservation;
+  res.status(200).json({ data });
 }
 
 module.exports = {
@@ -187,4 +208,5 @@ module.exports = {
     asyncErrorBoundary(reservationIsInPast),
     asyncErrorBoundary(create),
   ],
+  read: [asyncErrorBoundary(reservationIdExists),asyncErrorBoundary(read)],
 };

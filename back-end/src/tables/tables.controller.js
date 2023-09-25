@@ -13,7 +13,7 @@ async function validData(req, res, next) {
   });
 }
 
-function validReservationId(req, res, next) {
+function hasReservationId(req, res, next) {
   const reservationId = req.body.data.reservation_id;
   if (reservationId) {
     return next();
@@ -21,6 +21,19 @@ function validReservationId(req, res, next) {
   next({
     message: `reservation_id required`,
     status: 400,
+  });
+}
+
+async function validReservation (req, res, next) {
+  const resId = req.body.data.reservation_id
+  const reservation = await service.readReservation(resId);
+  if (reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({
+    message: `reservation_id ${resId} does not exist`,
+    status: 404,
   });
 }
 
@@ -33,6 +46,7 @@ async function validTable(req, res, next) {
   }
   next({
     message: `Table does not exist`,
+    status: 404,
   });
 }
 
@@ -47,17 +61,43 @@ function validTableName(req, res, next) {
   });
 }
 
-function validCapacity(req, res, next) {
+async function validCapacity(req, res, next) {
   const capacity = req.body.data.capacity;
-  if (capacity && capacity > 0 && !isNaN(capacity)) {
+  if (capacity && typeof capacity === "number" && capacity > 0) {
     return next();
   }
   next({
-    message: "capacity is required",
+    message: `capacity is required ${capacity}`,
     status: 400,
   });
 }
 
+function capacityCheck(req, res, next) {
+  const people = res.locals.reservation.people;
+  const capacity = res.locals.table.capacity;
+  if (people <= capacity) {
+    next();
+  } else {
+    next({
+      message: `Table capacity not sufficient`,
+      status: 400,
+    });
+  }
+}
+
+async function tableIsOccupied(req, res, next) {
+  const status = res.locals.table.status;
+  if (status === "occupied") {
+    next({
+      message: "table_id is occupied",
+      status: 400,
+    });
+    
+  }
+  return next();
+}
+
+// CRUD functions
 async function list(req, res) {
   const tableData = await service.list();
   res.json({ data: tableData });
@@ -72,7 +112,7 @@ async function create(req, res) {
   const newTableData = {
     table_name,
     capacity,
-    status: "Free",
+    status: "free",
   };
   const newTable = await service.create(newTableData);
   res.status(201).json({ data: newTable });
@@ -81,16 +121,16 @@ async function create(req, res) {
 async function update(req, res) {
   const reservation_id = req.body.data.reservation_id;
   const { table_name, capacity, table_id } = res.locals.table;
-  const updateDetail = {
+  const tableUpdate = {
     table_id,
     table_name,
     capacity,
-    status: "Occupied",
+    status: "occupied",
     reservation_id,
   };
-  const resUpdate = { ...res.locals.reservation, status: "Seated" };
-  const updatedTable = await service.update(updateDetail, resUpdate);
-  res.json({ data: updatedTable });
+  const resUpdate = { ...res.locals.reservation, status: "seated" };
+  const updatedTable = await service.update(tableUpdate, resUpdate);
+  res.status(200).json({ data: updatedTable });
 }
 
 module.exports = {
@@ -105,8 +145,10 @@ module.exports = {
   update: [
     asyncErrorBoundary(validTable),
     asyncErrorBoundary(validData),
-    asyncErrorBoundary(validReservationId),
-
+    asyncErrorBoundary(hasReservationId),
+    asyncErrorBoundary(validReservation),
+    asyncErrorBoundary(capacityCheck),
+    asyncErrorBoundary(tableIsOccupied),
     asyncErrorBoundary(update),
   ],
 };

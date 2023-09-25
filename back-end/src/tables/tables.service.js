@@ -8,9 +8,13 @@ function read(table_id) {
   return knex("tables").select("*").where({ table_id }).first();
 }
 
-function create(newTable) {
+function readReservation(reservation_id) {
+  return knex("reservations").where({ reservation_id }).first();
+}
+
+function create(table) {
   return knex("tables")
-    .insert(newTable)
+    .insert(table)
     .returning("*")
     .then((createdTable) => createdTable[0]);
 }
@@ -18,11 +22,10 @@ function create(newTable) {
 async function update(updatedTable, updatedReservation) {
   const { table_id, reservation_id } = updatedTable;
   await knex("tables").where({ table_id }).update(updatedTable).returning("*");
-
   await knex("reservations")
     .where({ reservation_id })
-    .update(updatedReservation).returning("*");
-
+    .update(updatedReservation)
+    .returning("*");
   return read(table_id);
 }
 
@@ -31,4 +34,5 @@ module.exports = {
   read,
   create,
   update,
+  readReservation,
 };
