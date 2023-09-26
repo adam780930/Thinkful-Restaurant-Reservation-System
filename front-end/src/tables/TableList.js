@@ -4,22 +4,20 @@ import { unassignTable } from "../utils/api";
 function TableList({ tables }) {
   const history = useHistory();
 
+  const finishHandler = (e) => {
+    e.preventDefault();
+    const controller = new AbortController();
+    const message = `Is this table ready to seat new guests? This cannot be undone.`;
+    const clicked = window.confirm(message);
+    if (clicked) {
+      unassignTable(e.target.value, controller.signal)
+      .then(() => history.push("/"))
+    }
+    return () => controller.abort();
+  };
+
   // List of tables
   const tableList = tables.map((table) => {
-    const finishHandler = (e) => {
-      e.preventDefault();
-      const controller = new AbortController();
-      const message = `Is this table ready to seat new guests? This cannot be undone.`;
-      const clicked = window.confirm(message);
-      if (clicked) {
-        unassignTable(e.target.value, controller.signal);
-        console.log(table.reservation_id);
-        console.log("this is " + e.target.value);
-      }
-      return;
-      // return () => controller.abort();
-    };
-
     return (
       <tr key={table.table_id}>
         <td>{table.table_name}</td>
