@@ -37,6 +37,16 @@ async function validReservation(req, res, next) {
   });
 }
 
+async function resAlreadySeated(req, res, next){
+  if (res.locals.reservation.status === "seated"){
+    next({
+      message: `reservation is already seated`,
+      status: 400,
+    });
+  }
+  return next();
+}
+
 async function validTable(req, res, next) {
   const table_id = req.params.table_id;
   const table = await service.read(table_id);
@@ -172,6 +182,7 @@ module.exports = {
     asyncErrorBoundary(validData),
     asyncErrorBoundary(hasReservationId),
     asyncErrorBoundary(validReservation),
+    asyncErrorBoundary(resAlreadySeated), //story 6
     asyncErrorBoundary(capacityCheck),
     asyncErrorBoundary(tableIsOccupied),
     asyncErrorBoundary(update),

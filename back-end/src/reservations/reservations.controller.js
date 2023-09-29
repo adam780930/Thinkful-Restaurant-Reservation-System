@@ -154,6 +154,43 @@ function reservationDuringBusHours(req, res, next) {
   return next();
 }
 
+function postStatusCheck(req, res, next) {
+  if (req.body.data.status) {
+    if (req.body.data.status === "booked") {
+      return next();
+    } else {
+      next({
+        message: `Status cannot be ${req.body.data.status}`,
+        status: 400,
+      });
+    }
+  } else {
+    return next();
+  }
+}
+
+function updateStatusCheck(req, res, next) {
+  const status = req.body.data.status;
+  if (status === "booked" || status === "seated" || status === "finished") {
+    return next();
+  } else {
+    next({
+      message: `Unknown status ${status}`,
+      status: 400,
+    });
+  }
+}
+
+function finishedRes(req, res, next) {
+  if (res.locals.reservation.status === "finished") {
+    next({
+      message: "A finished reservation cannot be updated",
+      status: 400,
+    });
+  }
+  return next();
+}
+
 // List reservation
 async function list(req, res) {
   const { date } = req.query;
@@ -189,6 +226,15 @@ async function read(req, res) {
   res.status(200).json({ data });
 }
 
+async function update(req, res) {
+  const updatedData = {
+    ...res.locals.reservation,
+    status: req.body.data.status,
+  };
+  const resStatusUpdate = await service.update(updatedData)
+  res.status(200).json({ data: resStatusUpdate });
+}
+
 module.exports = {
   list: [asyncErrorBoundary(list)],
   create: [
@@ -203,7 +249,14 @@ module.exports = {
     asyncErrorBoundary(reservationDuringBusHours),
     asyncErrorBoundary(reservationOnTuesday),
     asyncErrorBoundary(reservationIsInPast),
+    asyncErrorBoundary(postStatusCheck),
     asyncErrorBoundary(create),
   ],
   read: [asyncErrorBoundary(reservationIdExists), asyncErrorBoundary(read)],
+  update: [
+    asyncErrorBoundary(reservationIdExists),
+    asyncErrorBoundary(updateStatusCheck),
+    asyncErrorBoundary(finishedRes),
+    asyncErrorBoundary(update),
+  ],
 };

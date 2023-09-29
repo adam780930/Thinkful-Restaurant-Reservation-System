@@ -5,6 +5,7 @@ function ReservationList({ reservations }) {
 
   // List of reservation that matches currentDate
   const resList = reservations.map((reservation) => {
+    if (reservation.status !== "finished"){
     return (
       <tr key={reservation.reservation_id}>
         <td>{reservation.first_name}</td>
@@ -13,7 +14,7 @@ function ReservationList({ reservations }) {
         <td>{reservation.reservation_date}</td>
         <td>{reservation.reservation_time}</td>
         <td>{reservation.people}</td>
-        <td>{reservation.status}</td>
+        <td data-reservation-id-status={reservation.reservation_id}>{reservation.status}</td>
         <td>
           {reservation.status === "booked" ? (
             <div>
@@ -28,7 +29,7 @@ function ReservationList({ reservations }) {
           ) : null}
         </td>
       </tr>
-    );
+    )};
   });
 
   return (
