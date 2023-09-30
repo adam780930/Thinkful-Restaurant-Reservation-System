@@ -193,9 +193,14 @@ function finishedRes(req, res, next) {
 
 // List reservation
 async function list(req, res) {
-  const { date } = req.query;
-  const reservationData = await service.list(date);
-  res.json({ data: reservationData });
+  const { date, mobile_number } = req.query;
+  if (mobile_number) {
+    const reservationData = await service.search(mobile_number);
+    res.json({ data: reservationData });
+  } else {
+    const reservationData = await service.list(date);
+    res.json({ data: reservationData });
+  }
 }
 
 //Create reservation
@@ -231,7 +236,7 @@ async function update(req, res) {
     ...res.locals.reservation,
     status: req.body.data.status,
   };
-  const resStatusUpdate = await service.update(updatedData)
+  const resStatusUpdate = await service.update(updatedData);
   res.status(200).json({ data: resStatusUpdate });
 }
 
