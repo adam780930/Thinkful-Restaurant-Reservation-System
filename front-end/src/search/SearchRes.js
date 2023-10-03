@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import ReservationList from "../reservations/ReservationList";
 import { listReservations } from "../utils/api";
 
 function SearchRes() {
   const [mobile_number, setMobile_number] = useState("");
   const [reservations, setReservations] = useState(null);
-  const [error, setError] = useState("No reservations found");
   const history = useHistory();
 
   const changeHandler = (e) => {
     e.preventDefault();
-    setMobile_number(e.target.value);
+    const num = e.target.value;
+    if (!isNaN(num)) {
+      setMobile_number(num);
+    }
   };
 
   const submitHandler = (e) => {
@@ -22,10 +23,8 @@ function SearchRes() {
         setReservations(res);
         history.push("/search");
       })
-      .catch(setError);
     return () => controller.abort();
   };
- 
 
   return (
     <div className="mb-3">
@@ -33,10 +32,10 @@ function SearchRes() {
 
       <form className="form-group mb-3">
         <input
-          type="search"
+          type="text"
           name="mobile_number"
           className="form-control rounded mb-2"
-          placeholder="Enter a customer's phone number"
+          placeholder="Enter a phone number"
           onChange={changeHandler}
           value={mobile_number}
         />

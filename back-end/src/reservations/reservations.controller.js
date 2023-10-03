@@ -171,7 +171,12 @@ function postStatusCheck(req, res, next) {
 
 function updateStatusCheck(req, res, next) {
   const status = req.body.data.status;
-  if (status === "booked" || status === "seated" || status === "finished") {
+  if (
+    status === "booked" ||
+    status === "seated" ||
+    status === "finished" ||
+    status === "cancelled"
+  ) {
     return next();
   } else {
     next({
@@ -240,6 +245,16 @@ async function update(req, res) {
   res.status(200).json({ data: resStatusUpdate });
 }
 
+async function resUpdate(req, res) {
+  const updatedData = {
+    ...req.body.data,
+    reservation_id: res.locals.reservation.reservation_id,
+  };
+
+  const updatedReservation = await service.resUpdate(updatedData);
+  res.status(200).json({ data: updatedReservation });
+}
+
 module.exports = {
   list: [asyncErrorBoundary(list)],
   create: [
@@ -263,5 +278,16 @@ module.exports = {
     asyncErrorBoundary(updateStatusCheck),
     asyncErrorBoundary(finishedRes),
     asyncErrorBoundary(update),
+  ],
+  resUpdate: [
+    asyncErrorBoundary(reservationIdExists),
+    asyncErrorBoundary(validFirstName),
+    asyncErrorBoundary(validLastName),
+    asyncErrorBoundary(validMobileNumber),
+    asyncErrorBoundary(validDate),
+    asyncErrorBoundary(hasTime),
+    asyncErrorBoundary(validTime),
+    asyncErrorBoundary(validPeople),
+    asyncErrorBoundary(resUpdate),
   ],
 };
