@@ -40,7 +40,7 @@ function search(mobile_number) {
 }
 
 function resUpdate(updatedData){
-  return knex("reservation")
+  return knex("reservations")
   .select("*")
   .where({reservation_id: updatedData.reservation_id})
   .update(updatedData)

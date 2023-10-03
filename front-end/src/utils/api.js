@@ -83,7 +83,7 @@ export async function updateReservation(reservation, signal) {
   const { reservation_id } = reservation;
   const url = `${API_BASE_URL}/reservations/${reservation_id}`;
   const options = {
-    method: "POST",
+    method: "PUT",
     headers,
     body: JSON.stringify({ data: { ...reservation } }),
     signal,
