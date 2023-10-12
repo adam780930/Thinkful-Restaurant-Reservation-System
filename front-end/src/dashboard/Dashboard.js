@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState  } from "react";
 import { listReservations, listTables } from "../utils/api";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationList from "../reservations/ReservationList"
 import TableList from "../tables/TableList"
+import { today } from "../utils/date-time";
+import useQuery from "../utils/useQuery";
 
 /**
  * Defines the dashboard page.
@@ -14,17 +16,29 @@ import TableList from "../tables/TableList"
  */
 
 function Dashboard({ date }) {
+  // const {date} = useParams();
+  // console.log(date)
+  // var reservationDate = date;
+  // if (!reservationDate){
+  //   reservationDate = today();
+  // }
+  let query = useQuery();
+  date = query.get("date") || date;
+
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
+  // const [currentDate, setCurrentDate] = useState(reservationDate);
   const [currentDate, setCurrentDate] = useState(date);
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState(null);
-
   const history = useHistory();
+
+  
 
   useEffect(loadDashboard, [currentDate]);
 
   function loadDashboard() {
+    
     const abortController = new AbortController();
     setReservationsError(null); //List reservations
     listReservations({ date: currentDate }, abortController.signal)
@@ -49,16 +63,19 @@ function Dashboard({ date }) {
   const previousDayHandler = () => {
     setCurrentDate(previous(currentDate));
     history.push(`/dashboard?date=${previous(currentDate)}`);
+    console.log(previous(date))
   };
 
   const nextDayHandler = () => {
     setCurrentDate(next(currentDate));
     history.push(`/dashboard?date=${next(currentDate)}`);
+    console.log(currentDate)
   };
 
   const todayHandler = () => {
-    setCurrentDate(date);
+    setCurrentDate(today());
     history.push(`/dashboard`);
+    console.log(currentDate)
   };
 
   return (

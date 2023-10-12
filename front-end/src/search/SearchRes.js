@@ -77,7 +77,7 @@ function SearchRes() {
           </tbody>
         </table>
       ) : (
-        <p> No reservation found</p>
+        <p> No reservations found</p>
       )}
     </div>
   );

@@ -9,7 +9,7 @@ function TableNew() {
 
   const initialTableState = {
     table_name: "",
-    capacity: 1,
+    capacity: "",
   };
 
   const [tableData, setTableData] = useState({
@@ -45,7 +45,7 @@ function TableNew() {
   const cancelHandler = (e) => {
     e.preventDefault();
     const controller = new AbortController();
-    history.push("/");
+    history.goBack();
     return () => controller.abort();
   };
 
