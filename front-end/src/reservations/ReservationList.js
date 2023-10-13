@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { cancelReservation } from "../utils/api";
+import ErrorAlert from "../layout/ErrorAlert";
 
 function ReservationList({ reservations }) {
   const [error, setError] = useState(null);
@@ -63,6 +64,7 @@ function ReservationList({ reservations }) {
                 </div>
               ) : null}
             </td>
+            <ErrorAlert error={error} />
           </tr>
         );
       }

@@ -43,7 +43,6 @@ function ReservationNew() {
       .then(() => history.push(`/dashboard?date=${reservation.reservation_date}`))
       .then(setCurrentDate(`${reservation.reservation_date}`))
       .catch(setResError);
-      console.log(currentDate)
     return () => controller.abort();
   };
 

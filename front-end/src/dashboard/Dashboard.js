@@ -1,6 +1,6 @@
 import React, { useEffect, useState  } from "react";
 import { listReservations, listTables } from "../utils/api";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationList from "../reservations/ReservationList"
@@ -16,18 +16,12 @@ import useQuery from "../utils/useQuery";
  */
 
 function Dashboard({ date }) {
-  // const {date} = useParams();
-  // console.log(date)
-  // var reservationDate = date;
-  // if (!reservationDate){
-  //   reservationDate = today();
-  // }
+
   let query = useQuery();
   date = query.get("date") || date;
 
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
-  // const [currentDate, setCurrentDate] = useState(reservationDate);
   const [currentDate, setCurrentDate] = useState(date);
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState(null);
@@ -49,34 +43,22 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }
 
-  // function logTables(json) {
-  //   console.log(JSON.stringify(json))
-  //   setTables(json)
-  // }
-
-  // function loadReservations(reservations) {
-  //   console.log(JSON.stringify(reservations))
-  //   setReservations(reservations);
-  // }
-
   //Date changes
   const previousDayHandler = () => {
     setCurrentDate(previous(currentDate));
     history.push(`/dashboard?date=${previous(currentDate)}`);
-    console.log(previous(date))
   };
 
   const nextDayHandler = () => {
     setCurrentDate(next(currentDate));
     history.push(`/dashboard?date=${next(currentDate)}`);
-    console.log(currentDate)
   };
 
   const todayHandler = () => {
     setCurrentDate(today());
     history.push(`/dashboard`);
-    console.log(currentDate)
   };
+
 
   return (
     <main>
