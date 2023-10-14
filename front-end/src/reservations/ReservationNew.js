@@ -20,7 +20,6 @@ function ReservationNew() {
     ...initialResState,
   });
   const [createResError, setResError] = useState(null);
-  const [currentDate, setCurrentDate] = useState(null);
 
   const changeHandler = (e) => {
     if (e.target.name === "people") {
@@ -41,7 +40,6 @@ function ReservationNew() {
     const controller = new AbortController();
     createReservation(reservation, controller.signal)
       .then(() => history.push(`/dashboard?date=${reservation.reservation_date}`))
-      .then(setCurrentDate(`${reservation.reservation_date}`))
       .catch(setResError);
     return () => controller.abort();
   };

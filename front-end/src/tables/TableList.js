@@ -16,15 +16,25 @@ function TableList({ tables }) {
     return () => controller.abort();
   };
 
-  // List of tables
-  const tableList = tables.map((table) => {
+
+  return (
+    <table className="table">
+      <thead>
+        <tr>
+          <th scope="col">Table Name</th>
+          <th scope="col">Capacity</th>
+          <th scope="col">Status</th>
+          <th scope="col">Click when table is open</th>
+        </tr>
+      </thead>
+      <tbody>{tables.map((table) => {
     return (
       <tr key={table.table_id}>
         <td>{table.table_name}</td>
         <td>{table.capacity}</td>
         <td>{table.status}</td>
         <td>
-          {table.status === "occupied" ? (
+          {table.reservation_id ? (
             <button
               data-table-id-finish={table.table_id}
               type="button"
@@ -38,19 +48,7 @@ function TableList({ tables }) {
         </td>
       </tr>
     );
-  });
-
-  return (
-    <table className="table">
-      <thead>
-        <tr>
-          <th scope="col">Table Name</th>
-          <th scope="col">Capacity</th>
-          <th scope="col">Status</th>
-          <th scope="col">Click when table is open</th>
-        </tr>
-      </thead>
-      <tbody>{tableList}</tbody>
+  })}</tbody>
     </table>
   );
 }

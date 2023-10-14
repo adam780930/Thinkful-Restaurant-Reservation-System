@@ -158,6 +158,7 @@ async function destroy(req, res) {
   const freeTable = {
     ...res.locals.table,
     status: "free",
+    reservation_id: null,
   };
   const reservation = await service.readReservation(resId);
   const resUpdate = {
