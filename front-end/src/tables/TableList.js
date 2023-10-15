@@ -8,8 +8,7 @@ function TableList({ tables }) {
     e.preventDefault();
     const controller = new AbortController();
     const message = `Is this table ready to seat new guests? This cannot be undone.`;
-    const clicked = window.confirm(message);
-    if (clicked) {
+    if (window.confirm(message)) {
       unassignTable(e.target.value, controller.signal)
       .then(() => history.push("/"))
     }
