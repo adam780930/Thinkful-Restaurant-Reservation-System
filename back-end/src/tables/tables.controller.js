@@ -128,11 +128,12 @@ function read(req, res) {
 }
 
 async function create(req, res) {
-  const { table_name, capacity } = req.body.data;
+  const { table_name, capacity, reservation_id } = req.body.data;
   const newTableData = {
     table_name,
     capacity,
     status: "free",
+    reservation_id,
   };
   const newTable = await service.create(newTableData);
   res.status(201).json({ data: newTable });
@@ -158,7 +159,6 @@ async function destroy(req, res) {
   const freeTable = {
     ...res.locals.table,
     status: "free",
-    reservation_id: null,
   };
   const reservation = await service.readReservation(resId);
   const resUpdate = {
