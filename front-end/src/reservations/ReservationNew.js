@@ -28,10 +28,10 @@ function ReservationNew() {
         [e.target.name]: Number(e.target.value),
       });
     } if (e.target.name === "mobile_number") {
-      if(Number(e.target.value)){
+      if(!isNaN(e.target.value)){
       setReservation({
         ...reservation,
-        [e.target.name]: Number(e.target.value),
+        [e.target.name]: e.target.value,
       })}
     } else {
       setReservation({
