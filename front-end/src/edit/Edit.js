@@ -37,6 +37,12 @@ function Edit() {
         ...reservation,
         [e.target.name]: Number(e.target.value),
       });
+    } if (e.target.name === "mobile_number") {
+      if(Number(e.target.value)){
+      setReservation({
+        ...reservation,
+        [e.target.name]: Number(e.target.value),
+      })}
     } else {
       setReservation({
         ...reservation,

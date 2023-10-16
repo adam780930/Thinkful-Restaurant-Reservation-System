@@ -33,7 +33,7 @@ function ReservationNew() {
         ...reservation,
         [e.target.name]: Number(e.target.value),
       })}
-    }else {
+    } else {
       setReservation({
         ...reservation,
         [e.target.name]: e.target.value,
