@@ -288,6 +288,10 @@ module.exports = {
     asyncErrorBoundary(hasTime),
     asyncErrorBoundary(validTime),
     asyncErrorBoundary(validPeople),
+    asyncErrorBoundary(reservationDuringBusHours),
+    asyncErrorBoundary(reservationOnTuesday),
+    asyncErrorBoundary(reservationIsInPast),
+    asyncErrorBoundary(postStatusCheck),
     asyncErrorBoundary(resUpdate),
   ],
 };

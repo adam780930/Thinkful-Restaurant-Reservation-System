@@ -5,7 +5,9 @@
 import formatReservationDate from "./format-reservation-date";
 import formatReservationTime from "./format-reservation-date";
 
-const API_BASE_URL = "https://thinkful-restaurant-reservation-system-38zs.vercel.app";
+const API_BASE_URL = "https://thinkful-restaurant-reservation-system-38zs.vercel.app"
+// const API_BASE_URL =
+//   process.env.REACT_APP_API_BASE_URL || "http://localhost:5001";
 
 /**
  * Defines the default headers for these functions to work with `json-server`
