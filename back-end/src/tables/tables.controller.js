@@ -96,8 +96,8 @@ function capacityCheck(req, res, next) {
 }
 
 async function tableIsOccupied(req, res, next) {
-  const status = res.locals.table.status;
-  if (status === "occupied") {
+  const reservation_id = res.locals.table.reservation_id;
+  if (reservation_id) {
     next({
       message: "table_id is occupied",
       status: 400,
@@ -107,8 +107,8 @@ async function tableIsOccupied(req, res, next) {
 }
 
 async function tableNotOccupied(req, res, next) {
-  const status = res.locals.table.status;
-  if (status === "occupied") {
+  const reservation_id = res.locals.table.reservation_id;
+  if (reservation_id) {
     return next();
   }
   next({
@@ -132,7 +132,6 @@ async function create(req, res) {
   const newTableData = {
     table_name,
     capacity,
-    status: "free",
     reservation_id,
   };
   const newTable = await service.create(newTableData);
@@ -146,7 +145,6 @@ async function update(req, res) {
     table_id,
     table_name,
     capacity,
-    status: "occupied",
     reservation_id,
   };
   const resUpdate = { ...res.locals.reservation, status: "seated" };
@@ -158,7 +156,6 @@ async function destroy(req, res) {
   const resId = res.locals.table.reservation_id;
   const freeTable = {
     ...res.locals.table,
-    status: "free",
     reservation_id: null,
   };
   const reservation = await service.readReservation(resId);
