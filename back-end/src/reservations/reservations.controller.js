@@ -97,7 +97,7 @@ function validTime(req, res, next) {
 
 function validPeople(req, res, next) {
   const people = req.body.data.people;
-  if (people && people > 0 && !isNaN(people)) {
+  if (people && people > 0 && typeof people === "number") {
     return next();
   }
   next({
