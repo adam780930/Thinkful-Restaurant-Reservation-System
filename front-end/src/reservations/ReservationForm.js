@@ -1,6 +1,6 @@
 import React from "react";
 
-function ReservationForm({reservation, changeHandler, submitHandler, cancelHandler}) {
+function ReservationForm({reservation, changeHandler, submitHandler, cancelHandler, changePeopleHandler}) {
   return (
     <div>
       <form>
@@ -77,8 +77,7 @@ function ReservationForm({reservation, changeHandler, submitHandler, cancelHandl
               type="number"
               required={true}
               value={reservation.people}
-              min={1}
-              onChange={changeHandler}
+              onChange={changePeopleHandler}
             />
           </div>
           <div className="group-row">

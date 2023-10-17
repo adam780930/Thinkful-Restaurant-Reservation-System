@@ -13,7 +13,7 @@ function ReservationNew() {
     mobile_number: "",
     reservation_date: "",
     reservation_time: "",
-    people: 1,
+    people: "",
   };
 
   const [reservation, setReservation] = useState({
@@ -22,12 +22,7 @@ function ReservationNew() {
   const [createResError, setResError] = useState(null);
 
   const changeHandler = (e) => {
-    if (e.target.name === "people") {
-      setReservation({
-        ...reservation,
-        [e.target.name]: Number(e.target.value),
-      });
-    } if (e.target.name === "mobile_number") {
+    if (e.target.name === "mobile_number") {
       if(!isNaN(e.target.value)){
       setReservation({
         ...reservation,
@@ -40,6 +35,14 @@ function ReservationNew() {
       });
     }
   };
+
+  const changePeopleHandler = (e) => {
+    e.preventDefault();
+    setReservation({
+      ...reservation,
+        [e.target.name]: Number(e.target.value),
+      });
+    }
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -63,6 +66,7 @@ function ReservationNew() {
       <ErrorAlert error={createResError} />
       <ReservationForm
         changeHandler={changeHandler}
+        changePeopleHandler={changePeopleHandler}
         reservation={reservation}
         submitHandler={submitHandler}
         cancelHandler={cancelHandler}

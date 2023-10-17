@@ -32,12 +32,7 @@ function Edit() {
   useEffect(loadReservation, [reservation_id])
 
   const changeHandler = (e) => {
-    if (e.target.name === "people") {
-      setReservation({
-        ...reservation,
-        [e.target.name]: Number(e.target.value),
-      });
-    } if (e.target.name === "mobile_number") {
+    if (e.target.name === "mobile_number") {
       if(!isNaN(e.target.value)){
         setReservation({
           ...reservation,
@@ -50,6 +45,14 @@ function Edit() {
       });
     }
   };
+
+  const changePeopleHandler = (e) => {
+    e.preventDefault();
+    setReservation({
+      ...reservation,
+        [e.target.name]: Number(e.target.value),
+      });
+    }
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -76,6 +79,7 @@ function Edit() {
         reservation={reservation}
         submitHandler={submitHandler}
         cancelHandler={cancelHandler}
+        changePeopleHandler={changePeopleHandler}
       />
     </section>
   );

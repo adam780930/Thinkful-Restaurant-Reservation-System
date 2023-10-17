@@ -101,7 +101,7 @@ function validPeople(req, res, next) {
     return next();
   }
   next({
-    message: "people is required",
+    message: `people is required`,
     status: 400,
   });
 }
