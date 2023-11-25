@@ -38,7 +38,7 @@ function TableList({ tables }) {
             <button
               data-table-id-finish={table.table_id}
               type="button"
-              className="btn-dark"
+              className="btn btn-warning btn-md"
               onClick={finishHandler}
               value={table.table_id}
             >

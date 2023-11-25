@@ -68,13 +68,13 @@ function Dashboard({ date }) {
       </div>
       <div className="item centered">
         <div className="group-row">
-          <button className="btn-dark" onClick={previousDayHandler}>
+          <button className="btn btn-dark btn-md" onClick={previousDayHandler}>
             Previous
           </button>
-          <button className="btn-dark" onClick={todayHandler}>
+          <button className="btn btn-dark btn-md" onClick={todayHandler}>
             Today
           </button>
-          <button className="btn-dark" onClick={nextDayHandler}>
+          <button className="btn btn-dark btn-md" onClick={nextDayHandler}>
             Next
           </button>
         </div>

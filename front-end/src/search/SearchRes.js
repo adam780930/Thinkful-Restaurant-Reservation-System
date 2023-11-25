@@ -40,7 +40,7 @@ function SearchRes() {
           value={mobile_number}
         />
         <div>
-          <button type="submit" className="btn-dark" onClick={submitHandler}>
+          <button type="submit" className="btn btn-dark btn-md" onClick={submitHandler}>
             Find
           </button>
         </div>
