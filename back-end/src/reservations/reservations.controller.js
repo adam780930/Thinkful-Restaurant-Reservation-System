@@ -121,8 +121,8 @@ function reservationOnTuesday(req, res, next) {
 
 //Check if the reservation is made for a time in the past
 function reservationIsInPast(req, res, next) {
-  const { reservation_date, reservation_time } = req.body.data;
-  const now = Date.now();
+  const { reservation_date, reservation_time, userTime } = req.body.data;
+  const now = userTime;
   const resDate = new Date(`${reservation_date} ${reservation_time}`).valueOf();
   if (resDate < now) {
     next({
