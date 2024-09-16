@@ -47,7 +47,7 @@ function ReservationNew() {
   const submitHandler = (e) => {
     e.preventDefault();
     const controller = new AbortController();
-    Object.assign(reservation, {userTime: (new Date).valueOf()});
+    Object.assign(reservation, {userTime: new Date().valueOf()});
     createReservation(reservation, controller.signal)
       .then(() => history.push(`/dashboard?date=${reservation.reservation_date}`))
       .catch(setResError);
