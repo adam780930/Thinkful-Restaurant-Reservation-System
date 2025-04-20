@@ -8,10 +8,10 @@ require('dotenv').config();
 const path = require("path");
 
 const {
-  DATABASE_URL = "postgres://slarnsgt:AuAgqrI5rJUmEDGLK3ya1vUpwEHItVGE@mahmud.db.elephantsql.com/slarnsgt",
-  DATABASE_URL_DEVELOPMENT = "postgres://slarnsgt:AuAgqrI5rJUmEDGLK3ya1vUpwEHItVGE@mahmud.db.elephantsql.com/slarnsgt",
-  DATABASE_URL_TEST = "postgres://slarnsgt:AuAgqrI5rJUmEDGLK3ya1vUpwEHItVGE@mahmud.db.elephantsql.com/slarnsgt",
-  DATABASE_URL_PREVIEW = "postgres://slarnsgt:AuAgqrI5rJUmEDGLK3ya1vUpwEHItVGE@mahmud.db.elephantsql.com/slarnsgt",
+  DATABASE_URL = "postgresql://reservation_ess8_user:rEZw8CWKyjSmTfCtOwsbTFetPRKi7ei5@dpg-d029vk6uk2gs73e8o98g-a.oregon-postgres.render.com/reservation_ess8?ssl=true",
+  DATABASE_URL_DEVELOPMENT = "postgresql://reservation_ess8_user:rEZw8CWKyjSmTfCtOwsbTFetPRKi7ei5@dpg-d029vk6uk2gs73e8o98g-a.oregon-postgres.render.com/reservation_ess8?ssl=true",
+  DATABASE_URL_TEST = "postgresql://reservation_ess8_user:rEZw8CWKyjSmTfCtOwsbTFetPRKi7ei5@dpg-d029vk6uk2gs73e8o98g-a.oregon-postgres.render.com/reservation_ess8?ssl=true",
+  DATABASE_URL_PREVIEW = "postgresql://reservation_ess8_user:rEZw8CWKyjSmTfCtOwsbTFetPRKi7ei5@dpg-d029vk6uk2gs73e8o98g-a.oregon-postgres.render.com/reservation_ess8?ssl=true",
   DEBUG,
 } = process.env;
 
